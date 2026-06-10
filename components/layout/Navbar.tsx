@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -13,8 +14,13 @@ const navLinks = [
 
 export default function Navbar() {
   const [hidden, setHidden] = useState(false);
+  // Light treatment while over the homepage hero photo (top of the page);
+  // reverts to the default dark treatment once scrolled past it.
+  const [atTop, setAtTop] = useState(true);
   const headerRef = useRef<HTMLElement>(null);
   const lastY = useRef(0);
+  const pathname = usePathname();
+  const overHero = pathname === "/" && atTop;
 
   useEffect(() => {
     lastY.current = window.scrollY;
@@ -25,9 +31,12 @@ export default function Navbar() {
       // hide when scrolling down past a small threshold.
       const scrollingDown = y > lastY.current;
       setHidden(scrollingDown && y > 80);
+      // Still visually "over the hero" until most of the first screen is gone.
+      setAtTop(y < window.innerHeight * 0.85);
       lastY.current = y;
     };
 
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -81,7 +90,9 @@ export default function Navbar() {
             priority
             unoptimized
             data-logo
-            className="h-7 w-auto"
+            className={`h-7 w-auto transition-[filter] duration-300 ${
+              overHero ? "brightness-0 invert" : ""
+            }`}
           />
         </Link>
 
@@ -91,7 +102,9 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               data-nav-item
-              className="text-sm tracking-tight text-[#1a1a1a] transition-opacity hover:opacity-60"
+              className={`text-sm tracking-tight transition-opacity hover:opacity-60 ${
+                overHero ? "text-white" : "text-[#1a1a1a]"
+              }`}
             >
               {link.label}
             </Link>
@@ -101,7 +114,11 @@ export default function Navbar() {
         <Link
           href="/contact"
           data-nav-item
-          className="hidden rounded-full border border-[#1e2939] px-4 py-1.5 text-sm tracking-tight text-[#1a1a1a] transition-colors hover:bg-[#1a1a1a] hover:text-white md:inline-block"
+          className={`inline-block rounded-full border px-4 py-1.5 text-sm tracking-tight transition-colors ${
+            overHero
+              ? "border-white/70 text-white hover:bg-white hover:text-[#1a1a1a]"
+              : "border-[#1e2939] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white"
+          }`}
         >
           Get in Touch
         </Link>

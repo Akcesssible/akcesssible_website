@@ -36,6 +36,7 @@ export default function Hero() {
 
   return (
     <section
+      data-hero-tone={image.tone}
       className={`relative isolate overflow-hidden ${
         isDark ? "bg-black" : "bg-white"
       }`}
@@ -58,6 +59,13 @@ export default function Hero() {
             ? "from-black/80 via-black/30 to-black/10"
             : "from-white/85 via-white/35 to-white/10"
         }`}
+      />
+
+      {/* Top scrim: darkens the photo behind the fixed navbar so the logo and
+          links stay legible over both the bright day sky and the night shot. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/45 via-black/15 to-transparent"
       />
 
       {/* Subtle film-grain overlay (design layer: div.grain @ 2% opacity) */}
