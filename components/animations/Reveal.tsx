@@ -2,10 +2,7 @@
 
 import { useRef, type ElementType, type ReactNode } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 type RevealProps = {
   children: ReactNode;
@@ -19,9 +16,11 @@ type RevealProps = {
 };
 
 /**
- * Scroll-triggered reveal. In single mode the wrapper itself fades + rises into
- * view; in `stagger` mode its descendants marked `data-anim="reveal"` animate in
- * sequence. Honors prefers-reduced-motion (handled in CSS + skipped here).
+ * Reveals on viewport entry (fade + rise). Uses IntersectionObserver so the
+ * animation starts exactly when the element appears — robust against font/layout
+ * shifts that can throw off scroll-position-based triggers. In `stagger` mode its
+ * descendants marked `data-anim="reveal"` animate in sequence. Honors
+ * prefers-reduced-motion (handled in CSS + skipped here).
  */
 export default function Reveal({
   children,
@@ -34,32 +33,34 @@ export default function Reveal({
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
       const el = ref.current;
       if (!el) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       const targets = stagger
         ? el.querySelectorAll<HTMLElement>('[data-anim="reveal"]')
         : el;
 
-      gsap.fromTo(
-        targets,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          delay,
-          stagger: stagger ? 0.12 : 0,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            once: true,
-          },
+      gsap.set(targets, { opacity: 0, y: 40 });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          observer.disconnect();
+          gsap.to(targets, {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power3.out",
+            delay,
+            stagger: stagger ? 0.12 : 0,
+          });
         },
+        { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
       );
+
+      observer.observe(el);
+      return () => observer.disconnect();
     },
     { scope: ref },
   );

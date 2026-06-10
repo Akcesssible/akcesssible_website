@@ -1,38 +1,73 @@
-"use client";
+import { unstable_noStore as noStore } from "next/cache";
+import Image from "next/image";
+import ScrambleText from "@/components/animations/ScrambleText";
 
-import Link from "next/link";
-import { useRef } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+// Headline kept as two fixed lines so each word scrambles in place.
+const LINES = [
+  ["Digital", "platforms"],
+  ["built", "for", "Africa."],
+];
 
-const HEADLINE = "Digital platforms built for Africa.";
-const WORDS = HEADLINE.split(" ");
+/**
+ * Hero background images. One is picked at random on every request (the route
+ * opts out of caching via noStore), so a refresh can swap day ↔ night. Each
+ * image carries a `tone` so the headline and scrim can flip for legibility:
+ * a light photo gets black text on a soft light scrim, a dark photo gets white
+ * text on a dark scrim.
+ */
+const HERO_IMAGES = [
+  {
+    src: "/hero/hero-day.jpg",
+    tone: "light",
+    alt: "Daytime view of the Nairobi city skyline under a clear blue sky.",
+  },
+  {
+    src: "/hero/hero-night.jpg",
+    tone: "dark",
+    alt: "Aerial view of a sprawling city lit up at night.",
+  },
+] as const;
 
 export default function Hero() {
-  const root = useRef<HTMLElement>(null);
-
-  useGSAP(
-    () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-
-      tl.fromTo(
-        "[data-word]",
-        { yPercent: 100, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 1.1, stagger: 0.08 },
-      ).fromTo(
-        "[data-hero-cta]",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.9 },
-        "-=0.7",
-      );
-    },
-    { scope: root },
-  );
+  // Opt out of caching so the random pick re-runs on every request/refresh.
+  noStore();
+  const image = HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)];
+  const isDark = image.tone === "dark";
 
   return (
-    <section ref={root} className="relative isolate overflow-hidden bg-white">
+    <section
+      data-hero-tone={image.tone}
+      className={`relative isolate overflow-hidden ${
+        isDark ? "bg-black" : "bg-white"
+      }`}
+    >
+      {/* Background photo (day or night, chosen per request) */}
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+
+      {/* Tone-adaptive scrim: keeps the headline legible over the busy cityscape */}
+      <div
+        aria-hidden
+        className={`absolute inset-0 bg-gradient-to-t ${
+          isDark
+            ? "from-black/80 via-black/30 to-black/10"
+            : "from-white/85 via-white/35 to-white/10"
+        }`}
+      />
+
+      {/* Top scrim: darkens the photo behind the fixed navbar so the logo and
+          links stay legible over both the bright day sky and the night shot. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/45 via-black/15 to-transparent"
+      />
+
       {/* Subtle film-grain overlay (design layer: div.grain @ 2% opacity) */}
       <div
         aria-hidden
@@ -43,29 +78,41 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative mx-auto flex min-h-[100svh] max-w-[1312px] flex-col justify-end px-6 pb-16 pt-32 sm:px-8 lg:pb-24">
-        <div className="flex flex-col items-stretch gap-8 lg:flex-row lg:items-end lg:gap-6">
-          <h1 className="max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-black text-[clamp(2.75rem,10.5vw,132px)]">
-            {WORDS.map((word, i) => (
-              <span key={`${word}-${i}`}>
-                <span data-word className="inline-block">
-                  {word}
-                </span>
-                {i < WORDS.length - 1 ? " " : ""}
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1312px] flex-col justify-end px-6 pb-16 pt-32 sm:px-8 lg:pb-24">
+        {/* Two fixed lines; each word scrambles in place (staggered) */}
+        <h1
+          className={`max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-[clamp(2.75rem,10.5vw,132px)] ${
+            isDark ? "text-white" : "text-black"
+          }`}
+        >
+          {LINES.map((line, li) => {
+            const offset = LINES.slice(0, li).reduce(
+              (n, l) => n + l.length,
+              0,
+            );
+            return (
+              <span key={li} className="block">
+                {line.map((word, wi) => {
+                  const i = offset + wi;
+                  return (
+                    <span key={`${word}-${i}`}>
+                      <ScrambleText
+                        as="span"
+                        text={word}
+                        trigger="load"
+                        delay={i * 0.09}
+                        duration={0.8}
+                        chars="upperAndLowerCase"
+                        className="inline-block"
+                      />
+                      {wi < line.length - 1 ? " " : ""}
+                    </span>
+                  );
+                })}
               </span>
-            ))}
-          </h1>
-
-          <Link
-            href="/products"
-            data-hero-cta
-            className="flex flex-1 items-center justify-center rounded-[56px] bg-[#3b82f6] p-6 text-center text-white transition-colors hover:bg-[#2f73e8]"
-          >
-            <span className="whitespace-nowrap font-normal leading-[0.96] tracking-[-0.0625em] text-[clamp(1.25rem,3vw,32px)]">
-              discover products
-            </span>
-          </Link>
-        </div>
+            );
+          })}
+        </h1>
       </div>
     </section>
   );

@@ -27,12 +27,30 @@ export default function Footer() {
               className="flex items-center justify-between rounded-[40px] bg-white/[0.06] px-8 py-6 transition-colors hover:bg-white/[0.1]"
             >
               <span className="block">
-                <span className="block text-xl">Keep scrolling</span>
-                <span className={`mt-1 block ${labelClass}`}>to learn more</span>
+                <ScrambleText
+                  as="span"
+                  text="Keep scrolling"
+                  chars="upperAndLowerCase"
+                  className="block text-xl"
+                />
+                <ScrambleText
+                  as="span"
+                  text="to learn more"
+                  className={`mt-1 block ${labelClass}`}
+                />
               </span>
               <span className="block text-right">
-                <span className="block text-xl">About</span>
-                <span className={`mt-1 block ${labelClass}`}>next page</span>
+                <ScrambleText
+                  as="span"
+                  text="About"
+                  chars="upperAndLowerCase"
+                  className="block text-xl"
+                />
+                <ScrambleText
+                  as="span"
+                  text="next page"
+                  className={`mt-1 block ${labelClass}`}
+                />
               </span>
             </Link>
 
