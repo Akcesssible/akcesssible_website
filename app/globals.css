@@ -30,9 +30,8 @@ body {
    fully visible with no JS (<noscript>) or reduced-motion preference.
 --------------------------------------------------------------------------- */
 
-/* Hero: words + CTA hidden until GSAP rises + fades them in */
-.gsap [data-word],
-.gsap [data-hero-cta] {
+/* Load-triggered scramble text hidden until it scrambles in */
+.gsap [data-scramble] {
   opacity: 0;
 }
 
@@ -54,8 +53,7 @@ body {
   html {
     scroll-behavior: auto;
   }
-  .gsap [data-word],
-  .gsap [data-hero-cta],
+  .gsap [data-scramble],
   .gsap [data-nav-item],
   .gsap [data-anim="reveal"] {
     opacity: 1 !important;
