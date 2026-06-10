@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /staging/
+Sitemap: https://akcesssible.com/sitemap.xml
