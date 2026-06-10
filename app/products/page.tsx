@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Reveal from "@/components/animations/Reveal";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
@@ -12,11 +13,21 @@ export const metadata: Metadata = createMetadata({
 export default function ProductsPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-20">
-      <h1 className="text-4xl font-bold tracking-tight">Products &amp; Services</h1>
-      <p className="mt-4 max-w-2xl text-lg text-foreground/70">
-        We build digital products designed for African markets. Here is what we
-        are working on today.
-      </p>
+      <Reveal stagger>
+        <h1
+          data-anim="reveal"
+          className="text-4xl font-bold tracking-tight"
+        >
+          Products &amp; Services
+        </h1>
+        <p
+          data-anim="reveal"
+          className="mt-4 max-w-2xl text-lg text-foreground/70"
+        >
+          We build digital products designed for African markets. Here is what
+          we are working on today.
+        </p>
+      </Reveal>
 
       <div className="mt-12 grid gap-6 md:grid-cols-2">
         <Link

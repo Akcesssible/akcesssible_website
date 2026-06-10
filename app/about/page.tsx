@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Reveal from "@/components/animations/Reveal";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
@@ -11,11 +12,15 @@ export const metadata: Metadata = createMetadata({
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="text-4xl font-bold tracking-tight">About Us</h1>
-      <p className="mt-4 text-lg text-foreground/70">
-        Akcessible Technologies Limited is a Tanzanian technology company
-        building digital platforms in mobility and business software.
-      </p>
+      <Reveal stagger>
+        <h1 data-anim="reveal" className="text-4xl font-bold tracking-tight">
+          About Us
+        </h1>
+        <p data-anim="reveal" className="mt-4 text-lg text-foreground/70">
+          Akcessible Technologies Limited is a Tanzanian technology company
+          building digital platforms in mobility and business software.
+        </p>
+      </Reveal>
 
       <section className="mt-12 space-y-3">
         <h2 className="text-2xl font-semibold">Our Story</h2>

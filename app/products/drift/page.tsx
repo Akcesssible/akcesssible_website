@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Reveal from "@/components/animations/Reveal";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
@@ -29,15 +30,25 @@ const features = [
 export default function DriftPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-20">
-      <p className="text-sm font-semibold uppercase tracking-widest text-foreground/50">
-        Urban Mobility Platform
-      </p>
-      <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Drift</h1>
-      <p className="mt-6 text-lg text-foreground/70">
-        Drift is a smart mobility platform connecting riders with reliable urban
-        transport through seamless booking, cashless payments, and real-time
-        tracking.
-      </p>
+      <Reveal stagger>
+        <p
+          data-anim="reveal"
+          className="text-sm font-semibold uppercase tracking-widest text-foreground/50"
+        >
+          Urban Mobility Platform
+        </p>
+        <h1
+          data-anim="reveal"
+          className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl"
+        >
+          Drift
+        </h1>
+        <p data-anim="reveal" className="mt-6 text-lg text-foreground/70">
+          Drift is a smart mobility platform connecting riders with reliable
+          urban transport through seamless booking, cashless payments, and
+          real-time tracking.
+        </p>
+      </Reveal>
 
       <section className="mt-12 grid gap-6 sm:grid-cols-3">
         {features.map((feature) => (

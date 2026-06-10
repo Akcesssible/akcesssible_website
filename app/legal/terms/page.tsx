@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Reveal from "@/components/animations/Reveal";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
@@ -12,11 +13,15 @@ export const metadata: Metadata = createMetadata({
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-20">
-      <h1 className="text-4xl font-bold tracking-tight">Terms of Service</h1>
-      <p className="mt-4 text-foreground/70">
-        These terms of service govern your use of the platforms and products
-        provided by Akcessible Technologies Limited.
-      </p>
+      <Reveal stagger>
+        <h1 data-anim="reveal" className="text-4xl font-bold tracking-tight">
+          Terms of Service
+        </h1>
+        <p data-anim="reveal" className="mt-4 text-foreground/70">
+          These terms of service govern your use of the platforms and products
+          provided by Akcessible Technologies Limited.
+        </p>
+      </Reveal>
 
       <div className="mt-10 space-y-8 text-foreground/70">
         <section className="space-y-2">

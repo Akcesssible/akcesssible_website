@@ -22,3 +22,34 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* ---------------------------------------------------------------------------
+   GSAP reveal animations
+   Elements are hidden from first paint (when JS is available) to avoid a
+   flash of un-animated content, then GSAP animates them in. Falls back to
+   fully visible with no JS (<noscript>) or reduced-motion preference.
+--------------------------------------------------------------------------- */
+
+/* Hero: words + CTA hidden until GSAP rises + fades them in */
+.gsap [data-word],
+.gsap [data-hero-cta] {
+  opacity: 0;
+}
+
+/* Generic scroll/load reveal: fade + rise */
+.gsap [data-anim="reveal"] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .gsap [data-word],
+  .gsap [data-hero-cta],
+  .gsap [data-anim="reveal"] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

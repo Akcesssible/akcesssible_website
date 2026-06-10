@@ -71,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`gsap ${dmSans.variable} ${dmMono.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -79,6 +79,10 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd),
           }}
         />
+        {/* No-JS fallback: reveal-animated elements must stay visible */}
+        <noscript>
+          <style>{`[data-word],[data-hero-cta],[data-anim="reveal"]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body className="flex min-h-screen flex-col">
         <Navbar />
