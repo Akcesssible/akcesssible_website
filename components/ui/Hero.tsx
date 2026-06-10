@@ -1,9 +1,12 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
-import Link from "next/link";
 import ScrambleText from "@/components/animations/ScrambleText";
 
-const WORDS = "Digital platforms built for Africa.".split(" ");
+// Headline kept as two fixed lines so each word scrambles in place.
+const LINES = [
+  ["Digital", "platforms"],
+  ["built", "for", "Africa."],
+];
 
 /**
  * Hero background images. One is picked at random on every request (the route
@@ -68,44 +71,40 @@ export default function Hero() {
       />
 
       <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1312px] flex-col justify-end px-6 pb-16 pt-32 sm:px-8 lg:pb-24">
-        <div className="flex flex-col items-stretch gap-8 lg:flex-row lg:items-end lg:gap-6">
-          {/* Each word scrambles in place (staggered) so wrapping is preserved */}
-          <h1
-            className={`max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-[clamp(2.75rem,10.5vw,132px)] ${
-              isDark ? "text-white" : "text-black"
-            }`}
-          >
-            {WORDS.map((word, i) => (
-              <span key={`${word}-${i}`}>
-                <ScrambleText
-                  as="span"
-                  text={word}
-                  trigger="load"
-                  delay={i * 0.09}
-                  duration={0.8}
-                  chars="upperAndLowerCase"
-                  className="inline-block"
-                />
-                {i < WORDS.length - 1 ? " " : ""}
+        {/* Two fixed lines; each word scrambles in place (staggered) */}
+        <h1
+          className={`max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-[clamp(2.75rem,10.5vw,132px)] ${
+            isDark ? "text-white" : "text-black"
+          }`}
+        >
+          {LINES.map((line, li) => {
+            const offset = LINES.slice(0, li).reduce(
+              (n, l) => n + l.length,
+              0,
+            );
+            return (
+              <span key={li} className="block">
+                {line.map((word, wi) => {
+                  const i = offset + wi;
+                  return (
+                    <span key={`${word}-${i}`}>
+                      <ScrambleText
+                        as="span"
+                        text={word}
+                        trigger="load"
+                        delay={i * 0.09}
+                        duration={0.8}
+                        chars="upperAndLowerCase"
+                        className="inline-block"
+                      />
+                      {wi < line.length - 1 ? " " : ""}
+                    </span>
+                  );
+                })}
               </span>
-            ))}
-          </h1>
-
-          <Link
-            href="/products"
-            className="flex flex-1 items-center justify-center rounded-[56px] bg-[#3b82f6] p-6 text-center text-white transition-colors hover:bg-[#2f73e8]"
-          >
-            <ScrambleText
-              as="span"
-              text="discover products"
-              trigger="load"
-              delay={0.5}
-              duration={0.9}
-              chars="lowerCase"
-              className="whitespace-nowrap font-normal leading-[0.96] tracking-[-0.0625em] text-[clamp(1.25rem,3vw,32px)]"
-            />
-          </Link>
-        </div>
+            );
+          })}
+        </h1>
       </div>
     </section>
   );
