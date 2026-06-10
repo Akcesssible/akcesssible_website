@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 const navLinks = [
   { href: "/about", label: "About" },
@@ -7,9 +10,38 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    lastY.current = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      // Reveal when scrolling up (toward the top) or near the very top;
+      // hide when scrolling down past a small threshold.
+      const scrollingDown = y > lastY.current;
+      setHidden(scrollingDown && y > 80);
+      lastY.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
-      <nav className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-3 md:px-16">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ease-out ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
+      {/* Progressive blur: no background color, blur fades from full (top) to none (bottom) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 backdrop-blur-md [-webkit-mask-image:linear-gradient(to_bottom,black_0%,transparent_100%)] [mask-image:linear-gradient(to_bottom,black_0%,transparent_100%)]"
+      />
+
+      <nav className="relative mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-3 md:px-16">
         <Link
           href="/"
           aria-label="Akcessible Technologies — home"
