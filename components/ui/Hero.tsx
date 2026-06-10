@@ -61,12 +61,14 @@ export default function Hero() {
         }`}
       />
 
-      {/* Top scrim: darkens the photo behind the fixed navbar so the logo and
-          links stay legible over both the bright day sky and the night shot. */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/45 via-black/15 to-transparent"
-      />
+      {/* Top scrim: only on the dark (night) photo, where the white navbar sits.
+          The day photo keeps its clean sky and pairs with a dark navbar instead. */}
+      {isDark && (
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/40 to-transparent"
+        />
+      )}
 
       {/* Subtle film-grain overlay (design layer: div.grain @ 2% opacity) */}
       <div
