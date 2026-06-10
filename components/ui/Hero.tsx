@@ -45,7 +45,7 @@ export default function Hero() {
 
       <div className="relative mx-auto flex min-h-[100svh] max-w-[1312px] flex-col justify-end px-6 pb-16 pt-32 sm:px-8 lg:pb-24">
         <div className="flex flex-col items-stretch gap-8 lg:flex-row lg:items-end lg:gap-6">
-          <h1 className="max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-black text-[clamp(2.75rem,10.5vw,148px)]">
+          <h1 className="max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-black text-[clamp(2.75rem,10.5vw,132px)]">
             {WORDS.map((word, i) => (
               <span key={`${word}-${i}`}>
                 <span data-word className="inline-block">
