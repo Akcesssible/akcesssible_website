@@ -1,31 +1,49 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const navLinks = [
-  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/products", label: "Products" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-black/10 bg-background/80 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="text-lg font-bold tracking-tight">
-          Akcessible
+    <header className="absolute inset-x-0 top-0 z-50">
+      <nav className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-3 md:px-16">
+        <Link
+          href="/"
+          aria-label="Akcessible Technologies — home"
+          className="transition-opacity hover:opacity-70"
+        >
+          <Image
+            src="/at_logo.svg"
+            alt="Akcessible Technologies"
+            width={1676}
+            height={248}
+            priority
+            unoptimized
+            className="h-7 w-auto"
+          />
         </Link>
-        <ul className="flex items-center gap-6 text-sm font-medium">
+
+        <div className="hidden items-center gap-10 md:flex">
           {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="text-foreground/70 transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            </li>
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm tracking-tight text-[#1a1a1a] transition-opacity hover:opacity-60"
+            >
+              {link.label}
+            </Link>
           ))}
-        </ul>
+        </div>
+
+        <Link
+          href="/contact"
+          className="hidden rounded-full border border-[#1e2939] px-4 py-1.5 text-sm tracking-tight text-[#1a1a1a] transition-colors hover:bg-[#1a1a1a] hover:text-white md:inline-block"
+        >
+          Get in Touch
+        </Link>
       </nav>
     </header>
   );
