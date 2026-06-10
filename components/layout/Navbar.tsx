@@ -14,13 +14,24 @@ const navLinks = [
 
 export default function Navbar() {
   const [hidden, setHidden] = useState(false);
-  // Light treatment while over the homepage hero photo (top of the page);
-  // reverts to the default dark treatment once scrolled past it.
+  // Light treatment only while over a *dark* homepage hero photo (top of the
+  // page); reverts to the default dark treatment over a light hero, once
+  // scrolled past it, or on any other page.
   const [atTop, setAtTop] = useState(true);
+  const [heroDark, setHeroDark] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const lastY = useRef(0);
   const pathname = usePathname();
-  const overHero = pathname === "/" && atTop;
+  const overHero = pathname === "/" && atTop && heroDark;
+
+  // Read the hero's tone (set per request on the homepage) so the navbar can
+  // match it: white over the night photo, dark over the day photo.
+  useEffect(() => {
+    const tone = document
+      .querySelector("[data-hero-tone]")
+      ?.getAttribute("data-hero-tone");
+    setHeroDark(tone === "dark");
+  }, [pathname]);
 
   useEffect(() => {
     lastY.current = window.scrollY;
