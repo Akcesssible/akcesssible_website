@@ -81,7 +81,7 @@ export default function RootLayout({
         />
         {/* No-JS fallback: reveal-animated elements must stay visible */}
         <noscript>
-          <style>{`[data-word],[data-hero-cta],[data-anim="reveal"]{opacity:1!important;transform:none!important}`}</style>
+          <style>{`[data-word],[data-hero-cta],[data-nav-item],[data-anim="reveal"]{opacity:1!important;transform:none!important}[data-logo]{clip-path:none!important}`}</style>
         </noscript>
       </head>
       <body className="flex min-h-screen flex-col">

@@ -42,14 +42,26 @@ body {
   transform: translateY(40px);
 }
 
+/* Navbar entrance: logo wipes in left-to-right, links fade in */
+.gsap [data-logo] {
+  clip-path: inset(0 100% 0 0);
+}
+.gsap [data-nav-item] {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .gsap [data-word],
   .gsap [data-hero-cta],
+  .gsap [data-nav-item],
   .gsap [data-anim="reveal"] {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .gsap [data-logo] {
+    clip-path: none !important;
   }
 }
