@@ -72,7 +72,7 @@ export default function AboutPage() {
           </div>
           <div>
             <dt className="font-medium text-foreground">Contact</dt>
-            <dd>info@akcesssible.com</dd>
+            <dd>contact@akcesssible.com</dd>
           </div>
         </dl>
       </section>

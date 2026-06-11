@@ -13,7 +13,7 @@ export const SITE = {
     "Akcessible Technologies Limited is a Tanzanian technology company building digital platforms in mobility and business software.",
   ogDescription:
     "Tanzanian technology company building platforms in mobility and business software.",
-  email: "info@akcesssible.com",
+  email: "contact@akcesssible.com",
   ogImage: "/og-image.png",
   locale: "en_TZ",
 } as const;
@@ -42,14 +42,25 @@ export function createMetadata({
     description,
     alternates: { canonical },
     ...(noIndex ? { robots: { index: true, follow: false } } : {}),
+    // Next.js replaces (does not deep-merge) nested openGraph/twitter objects
+    // from the layout, so the shared image/site fields must be repeated here
+    // or they'd be dropped on every page that calls this helper.
     openGraph: {
+      type: "website",
+      locale: SITE.locale,
+      siteName: SITE.name,
+      url: canonical,
       title,
       description,
-      url: canonical,
+      images: [
+        { url: SITE.ogImage, width: 1200, height: 630, alt: SITE.name },
+      ],
     },
     twitter: {
+      card: "summary_large_image",
       title,
       description,
+      images: [SITE.ogImage],
     },
   };
 }
@@ -75,7 +86,7 @@ export const organizationJsonLd = {
   },
   contactPoint: {
     "@type": "ContactPoint",
-    email: "info@akcesssible.com",
+    email: "contact@akcesssible.com",
     contactType: "customer service",
     availableLanguage: ["English", "Swahili"],
   },
@@ -84,7 +95,7 @@ export const organizationJsonLd = {
     "https://twitter.com/akcessible",
   ],
   founders: [
-    { "@type": "Person", name: "Kevin Justus Msemakweli" },
-    { "@type": "Person", name: "Danford Christopher Mwamasage" },
+    { "@type": "Person", name: "Kevin Msemakweli" },
+    { "@type": "Person", name: "Danford Chris" },
   ],
 } as const;

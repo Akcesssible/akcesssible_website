@@ -46,8 +46,8 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-xl font-semibold text-foreground">Contact</h2>
           <p>
             For privacy questions, contact us at{" "}
-            <a href="mailto:info@akcesssible.com" className="underline">
-              info@akcesssible.com
+            <a href="mailto:contact@akcesssible.com" className="underline">
+              contact@akcesssible.com
             </a>
             .
           </p>
