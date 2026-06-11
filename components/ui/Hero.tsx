@@ -51,15 +51,14 @@ export default function Hero() {
         className="object-cover"
       />
 
-      {/* Tone-adaptive scrim: keeps the headline legible over the busy cityscape */}
-      <div
-        aria-hidden
-        className={`absolute inset-0 bg-gradient-to-t ${
-          isDark
-            ? "from-black/80 via-black/30 to-black/10"
-            : "from-white/85 via-white/35 to-white/10"
-        }`}
-      />
+      {/* Scrim: only on the dark (night) photo, to keep the white headline
+          legible. The day photo stays clean — the grain overlay is enough. */}
+      {isDark && (
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"
+        />
+      )}
 
       {/* Top scrim: only on the dark (night) photo, where the white navbar sits.
           The day photo keeps its clean sky and pairs with a dark navbar instead. */}
@@ -80,11 +79,13 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1312px] flex-col justify-end px-6 pb-16 pt-32 sm:px-8 lg:pb-24">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1312px] flex-col justify-end px-6 pb-8 pt-32 sm:px-8 lg:pb-16">
         {/* Two fixed lines; each word scrambles in place (staggered) */}
         <h1
           className={`max-w-[997px] font-normal leading-[0.96] tracking-[-0.067em] text-[clamp(2.75rem,10.5vw,132px)] ${
-            isDark ? "text-white" : "text-black"
+            isDark
+              ? "text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)]"
+              : "text-black [text-shadow:0_1px_20px_rgba(255,255,255,0.55)]"
           }`}
         >
           {LINES.map((line, li) => {
