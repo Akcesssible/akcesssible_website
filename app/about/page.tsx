@@ -50,8 +50,8 @@ export default function AboutPage() {
       <section className="mt-10 space-y-3">
         <h2 className="text-2xl font-semibold">Leadership</h2>
         <ul className="space-y-2 text-foreground/70">
-          <li>Kevin Justus Msemakweli — Co-Founder</li>
-          <li>Danford Christopher Mwamasage — Co-Founder</li>
+          <li>Kevin Msemakweli — Co-Founder</li>
+          <li>Danford Chris — Co-Founder</li>
         </ul>
       </section>
 
