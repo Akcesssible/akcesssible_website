@@ -28,10 +28,10 @@ export default function ContactPage() {
             Email
           </h2>
           <a
-            href="mailto:info@akcesssible.com"
+            href="mailto:contact@akcesssible.com"
             className="mt-2 block text-lg font-medium hover:underline"
           >
-            info@akcesssible.com
+            contact@akcesssible.com
           </a>
         </div>
         <div className="rounded-2xl border border-black/10 p-6">
